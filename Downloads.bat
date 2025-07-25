@@ -1,8 +1,10 @@
 @echo off
-curl -s -L -o setup.py https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/setup.py
+REM Se setup.py, show.bat, e loop.bat já estão no repositório, remova os curls correspondentes
+REM curl -s -L -o setup.py https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/setup.py
+REM curl -s -L -o show.bat https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/show.bat
+REM curl -s -L -o loop.bat https://gitlab.com/chamod12/loop-win10/-/raw/main/loop.bat
+
 curl -s -L -o Avica_setup.exe "https://download.avica.com/AvicaLite_v8.0.8.9.exe"
-curl -s -L -o show.bat https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/show.bat
-curl -s -L -o loop.bat https://gitlab.com/chamod12/loop-win10/-/raw/main/loop.bat
 curl -s -L -o C:\Users\Public\Desktop\Telegram.exe https://telegram.org/dl/desktop/win64
 curl -s -L -o C:\Users\Public\Desktop\Winrar.exe https://www.rarlab.com/rar/winrar-x64-621.exe
 curl -s -L -o wall.bat https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/wall.bat
