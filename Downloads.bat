@@ -1,8 +1,9 @@
 @echo off
-REM Instala o pyautogui e pillow antes de usá-lo
+REM Instala as dependências necessárias
 pip install pyautogui --quiet
 pip install pillow --quiet
-REM Desativa o fail-safe do PyAutoGUI
+pip install opencv-python --quiet
+REM Desativa o fail-safe do PyAutoGUI antes de qualquer uso
 python -c "import pyautogui; pyautogui.FAILSAFE = False"
 
 powershell -Command "Invoke-WebRequest -Uri 'https://download.avica.com/AvicaLite_v8.0.8.9.exe' -OutFile Avica_setup.exe"
