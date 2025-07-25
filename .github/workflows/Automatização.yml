@@ -6,7 +6,7 @@ on:
 jobs:
   build:
     name: Start Building on Windows 11 x64...
-    runs-on: windows-11-arm
+    runs-on: windows-11
     timeout-minutes: 360
     
     steps:
@@ -18,8 +18,8 @@ jobs:
           # Desativa a tela de configuração inicial (OOBE) de forma robusta
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v SkipMachineOOBE /t REG_DWORD /d 1 /f
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v BypassNRO /t REG_DWORD /d 1 /f
-          # Cria o diretório de trabalho se não existir
-          if not exist C:\actions-runner mkdir C:\actions-runner
+          # Verifica e cria o diretório C:\actions-runner no PowerShell
+          if (-not (Test-Path "C:\actions-runner")) { New-Item -Path "C:\actions-runner" -ItemType Directory -Force }
           # Configura o RunOnce para executar o setup após o boot
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v SetupScript /t REG_SZ /d "cmd /c C:\actions-runner\setup.bat" /f
           # Cria o arquivo setup.bat
