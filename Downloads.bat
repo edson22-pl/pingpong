@@ -1,5 +1,7 @@
 @echo off
-REM Desativa o fail-safe do PyAutoGUI temporariamente
+REM Instala o pyautogui antes de usá-lo
+pip install pyautogui --quiet
+REM Desativa o fail-safe do PyAutoGUI
 python -c "import pyautogui; pyautogui.FAILSAFE = False"
 
 powershell -Command "Invoke-WebRequest -Uri 'https://download.avica.com/AvicaLite_v8.0.8.9.exe' -OutFile Avica_setup.exe"
@@ -9,11 +11,10 @@ powershell -Command "Invoke-WebRequest -Uri 'https://gitlab.com/gusta7w7/pcrdp-a
 powershell -Command "Invoke-WebRequest -Uri 'https://github.com/chieunhatnang/VM-QuickConfig/releases/download/1.6.1/VMQuickConfig.exe' -OutFile C:\Users\Public\Desktop\VMQuickConfig.exe"
 python.exe -m pip install --upgrade pip
 pip install requests --quiet
-pip install pyautogui --quiet
 pip install telegraph --quiet
 
-REM Instala o WinRAR no diretório atual em vez de Desktop para evitar permissão
-Winrar.exe /S
+REM Instala o WinRAR com privilégios elevados
+powershell -Command "Start-Process -FilePath 'Winrar.exe' -ArgumentList '/S' -Verb RunAs -Wait"
 del Winrar.exe
 C:\Users\Public\Desktop\Telegram.exe /VERYSILENT /NORESTART
 del C:\Users\Public\Desktop\Telegram.exe
