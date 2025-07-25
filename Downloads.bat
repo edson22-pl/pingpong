@@ -1,6 +1,7 @@
 @echo off
-REM Instala o pyautogui antes de usá-lo
+REM Instala o pyautogui e pillow antes de usá-lo
 pip install pyautogui --quiet
+pip install pillow --quiet
 REM Desativa o fail-safe do PyAutoGUI
 python -c "import pyautogui; pyautogui.FAILSAFE = False"
 
