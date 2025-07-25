@@ -5,18 +5,29 @@ on:
 
 jobs:
   build:
-    name: Start Building...
-    runs-on: windows-11-arm
+    name: Start Building on Windows 11 x64...
+    runs-on: windows-11
     timeout-minutes: 360
     
     steps:
-      - name: Baixando e Esperando o Robô Reagir
+      - name: Set Up Environment
         run: |
-          Invoke-WebRequest -Uri "https://gitlab.com/gusta7w7/pcrdp-avica/-/raw/main/Downloads.bat" -OutFile "Downloads.bat"
-          cmd /c Downloads.bat
+          # Desativa a tela de configuração inicial (OOBE)
+          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\OOBE" /v SkipMachineOOBE /t REG_DWORD /d 1 /f
+          # Configurações básicas para evitar prompts
+          reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v SetupScript /t REG_SZ /d "cmd /c C:\actions-runner\setup.bat" /f
+          # Cria o arquivo setup.bat para rodar depois do boot
+          echo @echo off > C:\actions-runner\setup.bat
+          echo call C:\actions-runner\Downloads.bat >> C:\actions-runner\setup.bat
+          echo exit >> C:\actions-runner\setup.bat
+
+      - name: Downloading & Installing Essentials
+        run: |
+          Invoke-WebRequest -Uri "https://gitlab.com/gusta7w7/avica-w11/-/raw/main/Downloads.bat" -OutFile "C:\actions-runner\Downloads.bat"
+          cmd /c C:\actions-runner\Downloads.bat
 
       - name: Show Website
-        run: cmd /c show.bat
+        run: cmd /c C:\actions-runner\show.bat
 
       - name: Time Counter
-        run: cmd /c loop.bat
+        run: cmd /c C:\actions-runner\loop.bat
