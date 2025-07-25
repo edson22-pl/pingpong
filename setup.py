@@ -6,6 +6,7 @@ import os
 # Desativa o fail-safe do PyAutoGUI
 pag.FAILSAFE = False
 
+# Lista de ações com coordenadas (x, y, duration)
 actions = [
     (516, 405, 4),  # install
     (50, 100, 1),   # tic launch avica
@@ -15,10 +16,12 @@ actions = [
     (447, 286, 4),  # ss id & upload
 ]
 
+# Aguarda a interface carregar
 time.sleep(10)
 img_filename = 'NewAvicaRemoteID.png'
 
 def upload_image_to_gofile(img_filename):
+    """Faz o upload da imagem para o GoFile e retorna o link."""
     url = 'https://store1.gofile.io/uploadFile'
     try:
         with open(img_filename, 'rb') as img_file:
@@ -38,23 +41,32 @@ def upload_image_to_gofile(img_filename):
         print(f"Failed to upload image: {e}")
         return None
 
+# Executa as ações
 for x, y, duration in actions:
     pag.click(x, y, duration=duration)
     if (x, y) == (249, 203):
-        time.sleep(1)
+        time.sleep(1)  # Pequeno delay para ações repetidas
         pag.click(x, y, duration=duration)
-    if (x, y) == (447, 286):
-        # Corrige a sintaxe para executar o Avica.exe com caminho correto
+    elif (x, y) == (447, 286):  # Ação de captura e upload
+        # Executa o Avica.exe com caminho corrigido
         os.system('"C:\\Program Files (x86)\\Avica\\Avica.exe"')
-        time.sleep(5)
-        pag.click(249, 203, duration=4)
-        time.sleep(10)
-        pag.screenshot().save(img_filename)
+        time.sleep(5)  # Aguarda o Avica abrir
+        pag.click(249, 203, duration=4)  # Confirmação adicional
+        time.sleep(10)  # Aguarda a interface de upload
+        pag.screenshot().save(img_filename)  # Captura a tela
+        # Localiza e clica no botão "Next" usando a imagem
+        next_button = pag.locateCenterOnScreen('next_button.png', confidence=0.8)
+        if next_button:
+            pag.click(next_button.x, next_button.y, duration=4)
+            time.sleep(5)  # Aguarda a próxima tela carregar
+        else:
+            print("Botão 'Next' não encontrado na tela. Verifique a imagem 'next_button.png'.")
+        # Faz o upload da imagem
         gofile_link = upload_image_to_gofile(img_filename)
         if gofile_link:
             print(f"Image uploaded successfully. Link: {gofile_link}")
         else:
             print("Failed to upload the image.")
-    time.sleep(10)
+    time.sleep(10)  # Delay entre ações
 
 print('Done!')
