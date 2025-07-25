@@ -1,5 +1,7 @@
 @echo off
-REM Desativa o fail-safe do PyAutoGUI temporariamente
+REM Instala o pyautogui antes de usá-lo
+pip install pyautogui --quiet
+REM Desativa o fail-safe do PyAutoGUI
 python -c "import pyautogui; pyautogui.FAILSAFE = False"
 
 start "" /MAX "C:\Users\Public\Desktop\VMQuickConfig.exe"
