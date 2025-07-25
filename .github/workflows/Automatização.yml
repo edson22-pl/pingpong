@@ -5,11 +5,14 @@ on:
 
 jobs:
   build:
-    name: Start Building on Windows 11 x64...
+    name: Start Building on PingPong
     runs-on: windows-11-arm
     timeout-minutes: 360
     
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Set Up Environment
         run: |
           # Desativa a tela de configuração inicial (OOBE)
@@ -18,16 +21,14 @@ jobs:
           reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce" /v SetupScript /t REG_SZ /d "cmd /c C:\actions-runner\setup.bat" /f
           # Cria o arquivo setup.bat para rodar depois do boot
           echo @echo off > C:\actions-runner\setup.bat
-          echo call C:\actions-runner\Downloads.bat >> C:\actions-runner\setup.bat
+          echo call Downloads.bat >> C:\actions-runner\setup.bat
           echo exit >> C:\actions-runner\setup.bat
 
       - name: Downloading & Installing Essentials
-        run: |
-          Invoke-WebRequest -Uri "https://gitlab.com/gusta7w7/avica-w11/-/raw/main/Downloads.bat" -OutFile "C:\actions-runner\Downloads.bat"
-          cmd /c C:\actions-runner\Downloads.bat
+        run: cmd /c Downloads.bat
 
       - name: Show Website
-        run: cmd /c C:\actions-runner\show.bat
+        run: cmd /c show.bat
 
       - name: Time Counter
-        run: cmd /c C:\actions-runner\loop.bat
+        run: cmd /c loop.bat
