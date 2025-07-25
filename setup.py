@@ -2,8 +2,9 @@ import pyautogui as pag
 import time
 import requests
 import os
+import subprocess
 
-# Desativa o fail-safe do PyAutoGUI
+# Desativa o fail-safe do PyAutoGUI (já aplicado no Downloads.bat, mas reforçado aqui)
 pag.FAILSAFE = False
 
 # Lista de ações com coordenadas (x, y, duration)
@@ -48,8 +49,8 @@ for x, y, duration in actions:
         time.sleep(1)  # Pequeno delay para ações repetidas
         pag.click(x, y, duration=duration)
     elif (x, y) == (447, 286):  # Ação de captura e upload
-        # Executa o Avica.exe com caminho corrigido
-        os.system('"C:\\Program Files (x86)\\Avica\\Avica.exe"')
+        # Executa o Avica.exe com subprocess para melhor controle de caminhos
+        subprocess.run('"C:\\Program Files (x86)\\Avica\\Avica.exe"', shell=True, check=True)
         time.sleep(5)  # Aguarda o Avica abrir
         pag.click(249, 203, duration=4)  # Confirmação adicional
         time.sleep(10)  # Aguarda a interface de upload
